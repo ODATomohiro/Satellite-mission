@@ -568,6 +568,7 @@ const missions = [
     answerNum: v0,
     unit: "m/s",
     tolerance: 0.03,
+    formulaRevealStep: 2,
     hint: `¥¥(g = 9.8¥¥,¥¥mathrm{m/s^2},¥¥; R = 6.4¥¥times10^6¥¥,¥¥mathrm{m}¥¥) を代入してみよう。¥¥[v_0 = ¥¥sqrt{gR} = ¥¥sqrt{9.8 ¥¥times 6.4¥¥times10^6} ¥¥approx¥¥;?¥¥]`,
     diagram: `<svg viewBox="0 0 300 300" width="260" height="260" xmlns="http://www.w3.org/2000/svg">
       <circle cx="150" cy="150" r="60" fill="none" stroke="#1a2d5a" stroke-width="1.5" stroke-dasharray="4,4"/>
@@ -601,6 +602,7 @@ const missions = [
     answerNum2: k,
     unit: "m",
     tolerance: 0.03,
+    formulaRevealStep: 3,
     hint: `¥¥(T_e = 86400¥¥,¥¥mathrm{s}¥¥) を代入しよう。¥¥[r^3 = ¥¥frac{9.8¥¥times(6.4¥¥times10^6)^2¥¥times(86400)^2}{4¥¥pi^2}¥¥] 計算すると ¥¥(r ¥¥approx ${(r_geo/1e6).toFixed(2)}¥¥times10^6¥¥,¥¥mathrm{m}¥¥)`,
     diagram: `<svg viewBox="0 0 300 300" width="260" height="260" xmlns="http://www.w3.org/2000/svg">
       <circle cx="150" cy="150" r="100" fill="none" stroke="#1a3a5a" stroke-width="1" stroke-dasharray="3,3"/>
@@ -633,6 +635,7 @@ const missions = [
     answerNum: alpha,
     unit: "",
     tolerance: 0.02,
+    formulaRevealStep: 4,
     hint: `¥¥(k ¥¥approx ${k.toFixed(1)}¥¥) を使うと¥¥[¥¥alpha = ¥¥sqrt{¥¥frac{2¥¥times${k.toFixed(1)}}{${k.toFixed(1)}+1}} = ¥¥sqrt{${(2*k/(k+1)).toFixed(4)}} ¥¥approx ${alpha.toFixed(3)}¥¥]`,
     diagram: `<svg viewBox="0 0 320 220" width="320" height="220" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="100" cy="110" rx="200" ry="80" fill="none" stroke="#1a3a5a" stroke-width="1.5" stroke-dasharray="4,3"/>
@@ -664,12 +667,13 @@ const missions = [
     answerNum: beta,
     unit: "",
     tolerance: 0.02,
+    formulaRevealStep: 2,
     hint: `¥¥(¥¥alpha ¥¥approx ${alpha.toFixed(3)},¥¥; k ¥¥approx ${k.toFixed(1)}¥¥) なので¥¥[¥¥beta = ¥¥frac{¥¥alpha}{k} ¥¥approx ¥¥frac{${alpha.toFixed(3)}}{${k.toFixed(1)}} ¥¥approx ${beta.toFixed(3)}¥¥]`,
     diagram: null
   },
   {
     title: "A→B 移行時間",
-    subtitle: "ミッション⑤ — t_AB の計算",
+    subtitle: "ミッション⑤ — t_ABの計算",
     question: "⑤",
     desc: "ケプラーの第3法則を使って、衛星がA点からB点に達するまでの時間 ¥¥(t_{AB}¥¥) を ¥¥(g,¥¥,R,¥¥,¥¥pi¥¥) で表し、数値計算せよ。",
     formula: `¥¥frac{T_{¥¥rm ell}^2}{a^3} = ¥¥frac{T_e^2}{r^3}`,
@@ -684,6 +688,7 @@ const missions = [
     answerNum: t_AB,
     unit: "s",
     tolerance: 0.03,
+    formulaRevealStep: 3,
     hint: `半長軸 ¥¥(a = ¥¥dfrac{R(1+k)}{2}¥¥)、¥¥(T_{¥¥rm ell} = T_e¥¥left(¥¥dfrac{a}{r}¥¥right)^{3/2}¥¥)¥¥[t_{AB} = ¥¥frac{T_{¥¥rm ell}}{2} ¥¥approx ${(t_AB/3600).toFixed(1)}¥¥,¥¥mathrm{h}¥¥]`,
     diagram: null
   },
@@ -704,6 +709,7 @@ const missions = [
     answerNum: gamma,
     unit: "",
     tolerance: 0.02,
+    formulaRevealStep: 3,
     hint: `¥¥(v_{¥¥rm geo} = ¥¥sqrt{gR/k}¥¥) なので¥¥[¥¥gamma = ¥¥frac{v_{¥¥rm geo}}{v_0} = ¥¥frac{¥¥sqrt{gR/k}}{¥¥sqrt{gR}} = ¥¥frac{1}{¥¥sqrt{k}} ¥¥approx ¥¥frac{1}{¥¥sqrt{${k.toFixed(1)}}} ¥¥approx ${gamma.toFixed(3)}¥¥]`,
     diagram: null
   }
@@ -740,20 +746,20 @@ function renderMission(idx) {
     </div>
 
     <div class="constants-panel">
-      <div class="constant-item"><span class="k">¥¥(g¥¥) = </span><span class="v">9.8 m/s²</span></div>
-      <div class="constant-item"><span class="k">¥¥(R¥¥) = </span><span class="v">6.4×10⁶ m</span></div>
-      <div class="constant-item"><span class="k">¥¥(T_e¥¥) = </span><span class="v">86400 s</span></div>
-      <div class="constant-item"><span class="k">¥¥(¥¥pi¥¥) = </span><span class="v">3.14159…</span></div>
-      ${idx >= 1 ? `<div class="constant-item"><span class="k">¥¥(k¥¥) ≈ </span><span class="v">${k.toFixed(2)}</span></div>` : ''}
-      ${idx >= 0 ? `<div class="constant-item"><span class="k">¥¥(v_0¥¥) ≈ </span><span class="v">${(v0/1000).toFixed(3)} km/s</span></div>` : ''}
+      <div class="constant-item"><span class="k">${tex('g')} = </span><span class="v">9.8 m/s²</span></div>
+      <div class="constant-item"><span class="k">${tex('R')} = </span><span class="v">6.4×10⁶ m</span></div>
+      <div class="constant-item"><span class="k">${tex('T_e')} = </span><span class="v">86400 s</span></div>
+      <div class="constant-item"><span class="k">${tex('¥¥pi')} = </span><span class="v">3.14159…</span></div>
+      ${idx >= 1 ? `<div class="constant-item"><span class="k">${tex('k')} ≈ </span><span class="v">${k.toFixed(2)}</span></div>` : ''}
+      <div class="constant-item"><span class="k">${tex('v_0')} ≈ </span><span class="v">${(v0/1000).toFixed(3)} km/s</span></div>
     </div>
 
     ${m.diagram ? `<div class="diagram-container">${m.diagram}</div>` : ''}
 
     <div class="theory-box">
       <div class="theory-title">// 問題 ${m.question}</div>
-      <p>${m.desc}</p>
-      <div class="formula">¥¥[${m.formula}¥¥]</div>
+      <p>${texInline(m.desc)}</p>
+      <div class="formula">${tex(m.formula, true)}</div>
     </div>
 
     <div class="input-group">
@@ -771,27 +777,34 @@ function renderMission(idx) {
         return `
         <div class="step-row ${isVisible ? 'visible' : ''}" id="step-${i}">
           <span class="step-num">STEP ${i+1}</span>
-          <span class="step-text">${isLast && !done ? '<span style="color:var(--text-dim);font-style:italic;">— 正解後に表示 —</span>' : s}</span>
+          <span class="step-text">${isLast && !done ? '<span style="color:var(--text-dim);font-style:italic;">— 正解後に表示 —</span>' : texInline(s)}</span>
         </div>`;
       }).join('')}
+    </div>
 
-      <div style="margin-top:20px; padding-top:16px; border-top: 1px solid var(--border)">
-        <div class="input-label">
+    <div class="input-group" style="margin-bottom:20px;">
+      <div style="font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--accent); margin-bottom:14px;">// 求める式</div>
+      <div style="text-align:center; padding: 10px 0 4px; font-size:1.1em; ${done ? '' : 'display:none;'}" id="answer-formula-label">
+        ${tex(m.answerFormula)}
+      </div>
+
+      <div style="margin-top:18px; padding-top:16px; border-top: 1px solid var(--border)">
+        <div class="input-label" style="margin-bottom:10px;">
           <span class="q-num">ANS</span>
           数値を入力してください
         </div>
         <div class="answer-row">
           <input type="number" class="answer-input ${done ? 'correct' : ''}" id="answer-input"
-            placeholder="${m.answerFormula}"
+            placeholder="数値を入力…"
             value="${done ? m.answerNum.toExponential(3) : ''}"
             ${done ? 'disabled' : ''}
           >
-          <span class="unit-label">${m.unit}</span>
+          <span class="unit-label">${m.unit ? m.unit : ''}</span>
           <button class="btn btn-hint" onclick="showHint(${idx})" ${done ? 'disabled' : ''}>💡 次のヒント</button>
           <button class="btn btn-primary" onclick="checkAnswer(${idx})" ${done ? 'disabled' : ''}>検証</button>
         </div>
         <div class="result-display ${done ? 'correct' : ''}" id="result-display">
-          ${done ? `✅ 正解！ 答え: ${formatNum(m.answerNum)} ${m.unit}${m.answerNum2 ? `　k ≈ ${m.answerNum2.toFixed(2)}` : ''}` : ''}
+          ${done ? `✅ 正解！ 正確な値: ${formatNum(m.answerNum)}${m.unit ? ' ' + m.unit : ''}${m.answerNum2 ? `　(k ≈ ${m.answerNum2.toFixed(2)})` : ''}` : ''}
         </div>
       </div>
     </div>
@@ -802,22 +815,25 @@ function renderMission(idx) {
     </button>
   `;
 
-  // Render KaTeX
-  renderMathInElement(main, {
-    delimiters: [
-      {left: '¥¥[', right: '¥¥]', display: true},
-      {left: '¥¥(', right: '¥¥)', display: false}
-    ],
-    throwOnError: false
-  });
-
   // Enter key
   const inp = document.getElementById('answer-input');
   if (inp) inp.addEventListener('keydown', e => { if (e.key==='Enter') checkAnswer(idx); });
 }
 
+function tex(str, display = false) {
+  try {
+    return katex.renderToString(str, { throwOnError: false, displayMode: display });
+  } catch(e) { return str; }
+}
+
+function texInline(str) {
+  // テキスト中の ¥(...¥) と ¥[...¥] をkatex.renderToStringで変換
+  return str
+    .replace(/¥¥¥[(.+?)¥¥¥]/gs, (_, m) => tex(m, true))
+    .replace(/¥¥¥((.+?)¥¥¥)/gs, (_, m) => tex(m, false));
+}
+
 function getRevealedCount(idx) {
-  // 最初はSTEP0のみ表示（index 0）、revealed[idx]はさらに開放されたステップ数
   return state.revealed[idx] || 0;
 }
 
@@ -834,11 +850,16 @@ function revealNextStep(idx) {
     state.revealed[idx] = current + 1;
     const nextStep = document.getElementById(`step-${current + 1}`);
     if (nextStep) {
+      nextStep.querySelector('.step-text').innerHTML = texInline(missions[idx].steps[current + 1]);
       nextStep.classList.add('visible');
-      renderMathInElement(nextStep, {
-        delimiters: [{left:'¥¥[',right:'¥¥]',display:true},{left:'¥¥(',right:'¥¥)',display:false}],
-        throwOnError: false
-      });
+    }
+    // 求める式の表示タイミング
+    if (current + 1 >= missions[idx].formulaRevealStep) {
+      const formulaLabel = document.getElementById('answer-formula-label');
+      if (formulaLabel && formulaLabel.style.display === 'none') {
+        formulaLabel.style.display = '';
+        formulaLabel.style.animation = 'fadeIn 0.5s ease';
+      }
     }
     // ヒントカウント更新
     const hc = document.getElementById('hint-count');
@@ -874,12 +895,13 @@ function checkAnswer(idx) {
     // 最後のステップ（答え）を表示
     const lastStep = document.getElementById(`step-${m.steps.length - 1}`);
     if (lastStep) {
-      lastStep.querySelector('.step-text').innerHTML = m.steps[m.steps.length - 1];
+      lastStep.querySelector('.step-text').innerHTML = texInline(m.steps[m.steps.length - 1]);
       lastStep.classList.add('visible');
-      renderMathInElement(lastStep, {
-        delimiters: [{left:'¥¥[',right:'¥¥]',display:true},{left:'¥¥(',right:'¥¥)',display:false}],
-        throwOnError: false
-      });
+    }
+    const formulaLabel = document.getElementById('answer-formula-label');
+    if (formulaLabel && formulaLabel.style.display === 'none') {
+      formulaLabel.style.display = '';
+      formulaLabel.style.animation = 'fadeIn 0.4s ease';
     }
     updateProgress();
   } else {
@@ -907,11 +929,7 @@ function showHint(idx) {
   } else {
     // 全ステップ解放済み → 数値ヒントを表示
     result.className = 'result-display hint';
-    result.innerHTML = `💡 最終ヒント: ${m.hint}`;
-    renderMathInElement(result, {
-      delimiters: [{left:'¥¥[',right:'¥¥]',display:true},{left:'¥¥(',right:'¥¥)',display:false}],
-      throwOnError: false
-    });
+    result.innerHTML = `💡 最終ヒント: ${texInline(m.hint)}`;
   }
 }
 
